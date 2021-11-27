@@ -1,23 +1,8 @@
-import axios from 'axios'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
+import useProductTypes from '../hooks/useProductTypes'
 
 export default function ProductList () {
-  const [data, setdata] = useState()
-  useEffect(() => {
-    var config = {
-      method: 'get',
-      url: 'http://localhost:8989/products',
-      headers: {}
-    }
-
-    axios(config)
-      .then(function (response) {
-        setdata(response.data)
-      })
-      .catch(function (error) {
-        console.log(error)
-      })
-  }, [])
+  const data = useProductTypes()
   return data ? (
     <>
       <div className='container'>

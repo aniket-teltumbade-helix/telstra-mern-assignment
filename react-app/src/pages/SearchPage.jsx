@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router'
 import Card from '../components/Card'
 import Checkbox from '../components/Checkbox'
 import Pagination from '../components/Pagination'
+import useProductTypes from '../hooks/useProductTypes'
 import useSearch from '../hooks/useSearch'
 
 function TableHead () {
@@ -51,13 +52,36 @@ function TableBody ({ product }) {
 
 export default function SearchPage () {
   const { search, size, pageno } = useParams()
-  const [value, setvalue] = useState({ active: true, inactive: true })
-  const data = useSearch(search, size, pageno, value)
+  const [value, setvalue] = useState({ active: false, inactive: false })
+  const [productType, setProductType] = useState([])
+  const types = useProductTypes()
+
+  const data = useSearch(search, size, pageno, value, productType, types)
+
+  const handleType = e => {
+    if (productType.includes(e.target.name)) {
+      setProductType(productType.filter(el => el !== e.target.name))
+    } else {
+      setProductType([...productType, e.target.name])
+    }
+  }
+
   return data.data ? (
     <>
       <div class='flex flex-wrap space-x-1 w-full'>
         <div class='item w-96 h-32'>
-          <Card title='Product Types'></Card>
+          <Card title='Product Types'>
+            {types
+              ? types.map(el => (
+                  <Checkbox
+                    label={el._id}
+                    name={el._id}
+                    status={productType.includes(el._id)}
+                    handleChange={handleType}
+                  />
+                ))
+              : 'loading'}
+          </Card>
           <Card title='Maker Product Status'>
             <Checkbox
               label='Active'
