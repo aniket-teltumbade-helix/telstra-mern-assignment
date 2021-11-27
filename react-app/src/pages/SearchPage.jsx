@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useParams } from 'react-router'
 import Card from '../components/Card'
+import Checkbox from '../components/Checkbox'
 import Pagination from '../components/Pagination'
 import useSearch from '../hooks/useSearch'
 
@@ -27,13 +28,13 @@ function TableBody ({ product }) {
     typeof product[el] === 'boolean' && el !== '_id' ? (
       product[el] ? (
         <td class='px-6 py-2 whitespace-nowrap'>
-          <span class='px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800'>
+          <span class='px-4 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-500 text-white'>
             Active
           </span>
         </td>
       ) : (
         <td class='px-6 py-2 whitespace-nowrap'>
-          <span class='px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800'>
+          <span class='px-4 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-500 text-white'>
             Inactive
           </span>
         </td>
@@ -50,17 +51,34 @@ function TableBody ({ product }) {
 
 export default function SearchPage () {
   const { search, size, pageno } = useParams()
-  const data = useSearch(search, size, pageno)
+  const [value, setvalue] = useState({ active: true, inactive: true })
+  const data = useSearch(search, size, pageno, value)
   return data.data ? (
     <>
       <div class='flex flex-wrap space-x-1 w-full'>
         <div class='item w-96 h-32'>
-          <Card></Card>
-          <Card></Card>
+          <Card title='Product Types'></Card>
+          <Card title='Maker Product Status'>
+            <Checkbox
+              label='Active'
+              handleChange={() => setvalue({ ...value, active: !value.active })}
+              status={value.active}
+            />
+            <Checkbox
+              label='Inactive'
+              handleChange={() =>
+                setvalue({ ...value, inactive: !value.inactive })
+              }
+              status={value.inactive}
+            />
+          </Card>
         </div>
         <div class='item w-auto h-32 flex-grow'>
           <div className='py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8'>
             <div className='shadow overflow-hidden border-b border-gray-200 sm:rounded-lg'>
+              <p className='text-base	font-semibold py-2'>
+                Showing {data.data.count} results
+              </p>
               <table className='min-w-full divide-y divide-gray-200'>
                 <thead className='bg-gray-50'>
                   <tr>

@@ -22,13 +22,6 @@ export default function Pagination ({ count, total_pages, pageno, size }) {
         </Link>
       </div>
       <div className='hidden sm:flex-1 sm:flex sm:items-center sm:justify-center'>
-        {/* <div>
-          <p className='text-sm text-gray-700'>
-            Showing{` `}
-            <span className='font-medium'>{count}</span>
-            {` `} results
-          </p>
-        </div> */}
         <nav
           className='relative z-0 inline-flex rounded-md shadow-sm -space-x-px'
           aria-label='Pagination'
