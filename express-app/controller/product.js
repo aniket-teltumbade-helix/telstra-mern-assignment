@@ -27,8 +27,7 @@ exports.productSearch = (req, res) => {
     pageno = '1'
   }
   const skip = parseInt(size) * (parseInt(pageno) - 1)
-  const limit = parseInt(size) * parseInt(pageno)
-  console.log({ k, size, pageno, limit, skip })
+  const limit = parseInt(size)
   ProductModel.aggregate(
     [
       {
@@ -47,7 +46,37 @@ exports.productSearch = (req, res) => {
       if (err) {
         res.status(400).send({ err: 'Something went wrong!' + err })
       } else {
-        res.send(result)
+        ProductModel.aggregate(
+          [
+            {
+              $match: {
+                material_name: new RegExp(k)
+              }
+            },
+            {
+              $group: {
+                _id: null,
+                count: {
+                  $sum: 1
+                }
+              }
+            }
+          ],
+          (cerr, count) => {
+            if (cerr) {
+              res.status(400).send({ err: 'Something went wrong!' + cerr })
+            } else {
+              console.log()
+              res.send({
+                result,
+                count: count[0] ? count[0].count : 0,
+                total_pages: count[0]
+                  ? Math.ceil(count[0].count / parseInt(size))
+                  : 0
+              })
+            }
+          }
+        )
       }
     }
   )

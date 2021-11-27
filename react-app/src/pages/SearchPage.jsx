@@ -1,6 +1,7 @@
-import axios from 'axios'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { useParams } from 'react-router'
+import Card from '../components/Card'
+import Pagination from '../components/Pagination'
 import useSearch from '../hooks/useSearch'
 
 function TableHead () {
@@ -25,13 +26,13 @@ function TableBody ({ product }) {
   return productKeys.map(el =>
     typeof product[el] === 'boolean' && el !== '_id' ? (
       product[el] ? (
-        <td class='px-6 py-4 whitespace-nowrap'>
+        <td class='px-6 py-2 whitespace-nowrap'>
           <span class='px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800'>
             Active
           </span>
         </td>
       ) : (
-        <td class='px-6 py-4 whitespace-nowrap'>
+        <td class='px-6 py-2 whitespace-nowrap'>
           <span class='px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800'>
             Inactive
           </span>
@@ -39,7 +40,7 @@ function TableBody ({ product }) {
       )
     ) : (
       el !== '_id' && (
-        <td class='px-6 py-4 whitespace-nowrap text-sm text-gray-500'>
+        <td class='px-6 py-2 whitespace-nowrap text-sm text-gray-500'>
           {product[el]}
         </td>
       )
@@ -48,12 +49,16 @@ function TableBody ({ product }) {
 }
 
 export default function SearchPage () {
-  const { search } = useParams()
-  const data = useSearch({ search })
+  const { search, size, pageno } = useParams()
+  const data = useSearch(search, size, pageno)
   return data.data ? (
     <>
-      <div className='flex flex-col'>
-        <div className='-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8'>
+      <div class='flex flex-wrap space-x-1 w-full'>
+        <div class='item w-96 h-32'>
+          <Card></Card>
+          <Card></Card>
+        </div>
+        <div class='item w-auto h-32 flex-grow'>
           <div className='py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8'>
             <div className='shadow overflow-hidden border-b border-gray-200 sm:rounded-lg'>
               <table className='min-w-full divide-y divide-gray-200'>
@@ -63,18 +68,24 @@ export default function SearchPage () {
                   </tr>
                 </thead>
                 <tbody className='bg-white divide-y divide-gray-200'>
-                  {data.data.map(product => (
+                  {data.data.result.map(product => (
                     <tr>
                       <TableBody product={product} />
                     </tr>
                   ))}
                 </tbody>
               </table>
+              <Pagination
+                count={data.data.count}
+                total_pages={data.data.total_pages}
+                pageno={pageno}
+                search={search}
+                size={size}
+              />
             </div>
           </div>
         </div>
       </div>
-      <pre>{JSON.stringify(data.data, null, 2)}</pre>
     </>
   ) : (
     <h1>Loading</h1>
