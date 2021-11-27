@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useParams } from 'react-router'
 import Card from '../components/Card'
 import Checkbox from '../components/Checkbox'
@@ -70,7 +70,7 @@ export default function SearchPage () {
     <>
       <div class='flex flex-wrap space-x-1 w-full'>
         <div class='item w-96 h-32'>
-          <Card title='Product Types'>
+          <Card title='Product Types' handleClear={() => setProductType([])}>
             {types
               ? types.map(el => (
                   <Checkbox
@@ -82,7 +82,10 @@ export default function SearchPage () {
                 ))
               : 'loading'}
           </Card>
-          <Card title='Maker Product Status'>
+          <Card
+            title='Maker Product Status'
+            handleClear={() => setvalue({ active: false, inactive: false })}
+          >
             <Checkbox
               label='Active'
               handleChange={() => setvalue({ ...value, active: !value.active })}

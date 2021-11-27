@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { SearchIcon } from '@heroicons/react/outline'
 import { useNavigate } from 'react-router'
+import { Link } from 'react-router-dom'
 
 export default function NavBar () {
   const [search, setsearch] = useState()
@@ -15,11 +16,13 @@ export default function NavBar () {
   }
   return (
     <div className='flex items-center justify-start p-5'>
-      <img
-        src='https://via.placeholder.com/60'
-        alt='...'
-        className='shadow-lg rounded max-w-full h-auto align-middle border-none m-2'
-      />
+      <Link to='/'>
+        <img
+          src='https://via.placeholder.com/60'
+          alt='...'
+          className='shadow-lg rounded max-w-full h-auto align-middle border-none m-2'
+        />
+      </Link>
       <div className='flex border-2 rounded'>
         <input
           type='text'
