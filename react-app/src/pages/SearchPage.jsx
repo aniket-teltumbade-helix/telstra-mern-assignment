@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router'
 import Card from '../components/Card'
 import Checkbox from '../components/Checkbox'
@@ -68,7 +68,7 @@ export default function SearchPage () {
       setProductType([...productType, e.target.name])
     }
   }
-
+  useEffect(() => {}, [types])
   return data.data ? (
     <>
       <div className='flex flex-wrap space-x-1 w-full'>

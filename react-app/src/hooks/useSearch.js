@@ -16,8 +16,8 @@ export default function useSearch (
     var config = {
       method: 'get',
       url: `http://localhost:8989/products/search?k=${search}&size=${size}&pageno=${pageno}&active_product=${active_status}&product_type=${
-        product_type.length > 0
-          ? product_type
+        product_type
+          ? Object.keys(product_type)
           : types
           ? types.map(el => el._id)
           : []

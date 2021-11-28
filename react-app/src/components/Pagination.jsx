@@ -1,9 +1,13 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 export default function Pagination ({ count, total_pages, pageno, size }) {
+  const navigate = useNavigate()
   if (!pageno) {
     pageno = 1
+  }
+  if (pageno > total_pages) {
+    navigate('p/1')
   }
   return (
     <>
