@@ -6,12 +6,11 @@ export default function Select ({ options, selected, handleSort }) {
       <select
         className='form-select block w-full mt-1 p-1 mr-2'
         onChange={handleSort}
+        value={selected}
       >
         <option>Sort</option>
         {options.map(el => (
-          <option defaultValue={el.value} selected={selected === el.name}>
-            {el.name}
-          </option>
+          <option defaultValue={el.name}>{el.name}</option>
         ))}
       </select>
     </label>

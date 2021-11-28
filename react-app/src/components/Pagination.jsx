@@ -6,9 +6,10 @@ export default function Pagination ({ count, total_pages, pageno, size }) {
   if (!pageno) {
     pageno = 1
   }
-  // if (pageno > total_pages) {
-  //   navigate('p/1')
-  // }
+  if (pageno > total_pages) {
+    navigate('p/1')
+  }
+  console.log({ total_pages, pageno })
   return (
     <>
       <div className='flex-1 flex justify-between sm:hidden'>
@@ -65,7 +66,9 @@ export default function Pagination ({ count, total_pages, pageno, size }) {
           ))}
           <Link
             to={`${
-              pageno !== total_pages ? `${`p/${parseInt(pageno) + 1}`}` : '#'
+              parseInt(pageno) !== total_pages
+                ? `${`p/${parseInt(pageno) + 1}`}`
+                : '#'
             }`}
             className='relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50'
           >

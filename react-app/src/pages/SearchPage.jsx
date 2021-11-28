@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useParams } from 'react-router'
 import Card from '../components/Card'
 import Checkbox from '../components/Checkbox'
 import Pagination from '../components/Pagination'
+import Select from '../components/Select'
 import useProductTypes from '../hooks/useProductTypes'
 import useSearch from '../hooks/useSearch'
 
@@ -56,10 +57,19 @@ function TableBody ({ product }) {
 export default function SearchPage () {
   const { search, size, pageno } = useParams()
   const [value, setvalue] = useState({ active: false, inactive: false })
+  const [sortSelected, setSortSelected] = useState('')
   const [productType, setProductType] = useState([])
   const types = useProductTypes()
 
-  const data = useSearch(search, size, pageno, value, productType, types)
+  const data = useSearch(
+    search,
+    size,
+    pageno,
+    value,
+    productType,
+    types,
+    sortSelected
+  )
 
   const handleType = e => {
     console.log({ productType })
@@ -69,7 +79,17 @@ export default function SearchPage () {
       setProductType([...productType, e.target.name])
     }
   }
-  useEffect(() => {}, [types])
+
+  const handleSort = e => {
+    setSortSelected(e.target.value)
+  }
+
+  const sortList = [
+    { name: 'Material Name A-Z' },
+    { name: 'Material Name Z-A' },
+    { name: 'Product Type A-Z' },
+    { name: 'Product Type Z-A' }
+  ]
   return data.data ? (
     <>
       <div className='flex flex-wrap space-x-1 w-full'>
@@ -108,9 +128,16 @@ export default function SearchPage () {
         <div className='item w-auto h-32 flex-grow'>
           <div className='py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8'>
             <div className='shadow overflow-hidden border-b border-gray-200 sm:rounded-lg'>
-              <p className='text-base	font-semibold py-2'>
-                Showing {data.data.count} results
-              </p>
+              <div className='flex items-center justify-between'>
+                <p className='text-base	font-semibold py-2'>
+                  Showing {data.data.count} results
+                </p>
+                <Select
+                  options={sortList}
+                  handleSort={handleSort}
+                  selected={sortSelected}
+                />
+              </div>
               <table className='min-w-full divide-y divide-gray-200'>
                 <thead className='bg-gray-50'>
                   <tr>

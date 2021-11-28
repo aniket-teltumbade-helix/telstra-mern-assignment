@@ -19,7 +19,15 @@ exports.productTypes = (req, res) => {
   )
 }
 exports.productSearch = (req, res) => {
-  let { k, size, pageno, active_product, product_type } = req.query
+  let {
+    k,
+    size,
+    pageno,
+    active_product,
+    product_type,
+    sortField,
+    order
+  } = req.query
   if (!size) {
     size = '10'
   }
@@ -30,7 +38,8 @@ exports.productSearch = (req, res) => {
   active_product = active_product.split(',').map(el => el === 'true')
   const skip = parseInt(size) * (parseInt(pageno) - 1)
   const limit = parseInt(size)
-
+  let sort = { [sortField]: parseInt(order) }
+  console.log(sort)
   ProductModel.aggregate(
     [
       {
@@ -42,6 +51,9 @@ exports.productSearch = (req, res) => {
           maker_product_status: { $in: [...active_product, new RegExp(k)] },
           product_type: { $in: [...product_type.split(','), new RegExp(k)] }
         }
+      },
+      {
+        $sort: sort
       },
       {
         $skip: skip
