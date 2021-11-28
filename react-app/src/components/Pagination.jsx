@@ -6,9 +6,9 @@ export default function Pagination ({ count, total_pages, pageno, size }) {
   if (!pageno) {
     pageno = 1
   }
-  if (pageno > total_pages) {
-    navigate('p/1')
-  }
+  // if (pageno > total_pages) {
+  //   navigate('p/1')
+  // }
   return (
     <>
       <div className='flex-1 flex justify-between sm:hidden'>

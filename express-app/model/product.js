@@ -7,9 +7,15 @@ var productSchema = new mongoose.Schema(
     description: { type: String },
     maker_product_status: { type: Boolean, default: false }
   },
-  { timestamps: true }
+  { timestamps: true, autoIndex: true }
 )
-
+productSchema.index({
+  material_name: 'text',
+  product_type: 'text',
+  description: 'text'
+})
 var ProductModel = mongoose.model('product', productSchema)
-
+// ProductModel.createIndexes()
+//   .then(res => console.log(res))
+//   .catch(err => console.error(err))
 module.exports = ProductModel

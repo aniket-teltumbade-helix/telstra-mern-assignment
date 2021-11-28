@@ -26,27 +26,18 @@ exports.productSearch = (req, res) => {
   if (!pageno) {
     pageno = '1'
   }
-  k = new RegExp(k)
+  let k1 = new RegExp(k)
   active_product = active_product.split(',').map(el => el === 'true')
   const skip = parseInt(size) * (parseInt(pageno) - 1)
   const limit = parseInt(size)
+
   ProductModel.aggregate(
     [
       {
         $match: {
           $or: [
-            {
-              material_name: new RegExp(k)
-            },
-            {
-              product_type: new RegExp(k)
-            },
-            {
-              description: new RegExp(k)
-            },
-            {
-              maker_product_status: new RegExp(k)
-            }
+            { material_name: { $regex: k } },
+            { product_type: { $regex: k } }
           ],
           maker_product_status: { $in: [...active_product, new RegExp(k)] },
           product_type: { $in: [...product_type.split(','), new RegExp(k)] }
@@ -68,18 +59,8 @@ exports.productSearch = (req, res) => {
             {
               $match: {
                 $or: [
-                  {
-                    material_name: new RegExp(k)
-                  },
-                  {
-                    product_type: new RegExp(k)
-                  },
-                  {
-                    description: new RegExp(k)
-                  },
-                  {
-                    maker_product_status: new RegExp(k)
-                  }
+                  { material_name: { $regex: k } },
+                  { product_type: { $regex: k } }
                 ],
                 maker_product_status: {
                   $in: [...active_product, new RegExp(k)]

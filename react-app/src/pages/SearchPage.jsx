@@ -62,6 +62,7 @@ export default function SearchPage () {
   const data = useSearch(search, size, pageno, value, productType, types)
 
   const handleType = e => {
+    console.log({ productType })
     if (productType.includes(e.target.name)) {
       setProductType(productType.filter(el => el !== e.target.name))
     } else {
