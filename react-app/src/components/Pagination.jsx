@@ -39,15 +39,16 @@ export default function Pagination ({ count, total_pages, pageno, size }) {
               aria-hidden='true'
             >
               <path
-                fill-rule='evenodd'
+                fillRule='evenodd'
                 d='M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z'
-                clip-rule='evenodd'
+                clipRule='evenodd'
               />
             </svg>
           </Link>
           {[...Array(total_pages)].map((x, i) => (
             <Link
               to={`${size ? `s/${size}/` : ''}p/${i + 1}`}
+              key={i}
               aria-current='page'
               className={`z-10 ${
                 i + 1 === parseInt(pageno)
@@ -73,9 +74,9 @@ export default function Pagination ({ count, total_pages, pageno, size }) {
               aria-hidden='true'
             >
               <path
-                fill-rule='evenodd'
+                fillRule='evenodd'
                 d='M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z'
-                clip-rule='evenodd'
+                clipRule='evenodd'
               />
             </svg>
           </Link>

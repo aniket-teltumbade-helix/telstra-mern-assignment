@@ -9,7 +9,10 @@ export default function ProductList () {
         <p className='text-2xl font-black	'>Browse By Product Type</p>
         <div className='grid grid-flow-col grid-cols-4 auto-cols-max gap-x-5'>
           {data.map(el => (
-            <div class='max-w-sm rounded overflow-hidden shadow-lg py-20 text-center'>
+            <div
+              key={el._id}
+              className='max-w-sm rounded overflow-hidden shadow-lg py-20 text-center'
+            >
               {el._id}
             </div>
           ))}

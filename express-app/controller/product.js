@@ -26,6 +26,7 @@ exports.productSearch = (req, res) => {
   if (!pageno) {
     pageno = '1'
   }
+  k = new RegExp(k)
   active_product = active_product.split(',').map(el => el === 'true')
   const skip = parseInt(size) * (parseInt(pageno) - 1)
   const limit = parseInt(size)
@@ -33,9 +34,22 @@ exports.productSearch = (req, res) => {
     [
       {
         $match: {
-          material_name: new RegExp(k),
-          maker_product_status: { $in: active_product },
-          product_type: { $in: product_type.split(',') }
+          $or: [
+            {
+              material_name: new RegExp(k)
+            },
+            {
+              product_type: new RegExp(k)
+            },
+            {
+              description: new RegExp(k)
+            },
+            {
+              maker_product_status: new RegExp(k)
+            }
+          ],
+          maker_product_status: { $in: [...active_product, new RegExp(k)] },
+          product_type: { $in: [...product_type.split(','), new RegExp(k)] }
         }
       },
       {
@@ -53,7 +67,26 @@ exports.productSearch = (req, res) => {
           [
             {
               $match: {
-                material_name: new RegExp(k)
+                $or: [
+                  {
+                    material_name: new RegExp(k)
+                  },
+                  {
+                    product_type: new RegExp(k)
+                  },
+                  {
+                    description: new RegExp(k)
+                  },
+                  {
+                    maker_product_status: new RegExp(k)
+                  }
+                ],
+                maker_product_status: {
+                  $in: [...active_product, new RegExp(k)]
+                },
+                product_type: {
+                  $in: [...product_type.split(','), new RegExp(k)]
+                }
               }
             },
             {
@@ -69,7 +102,6 @@ exports.productSearch = (req, res) => {
             if (cerr) {
               res.status(400).send({ err: 'Something went wrong!' + cerr })
             } else {
-              console.log()
               res.send({
                 result,
                 count: count[0] ? count[0].count : 0,

@@ -15,6 +15,7 @@ function TableHead () {
   ]
   return header.map(el => (
     <th
+      key={el}
       scope='col'
       className='px-6 py-3 text-left text-xs font-medium text-gray-500 tracking-wider'
     >
@@ -24,25 +25,27 @@ function TableHead () {
 }
 function TableBody ({ product }) {
   const productKeys = Object.keys(product)
-  productKeys.map(el => console.log(typeof el, el))
-  return productKeys.map(el =>
+  return productKeys.map((el, id) =>
     typeof product[el] === 'boolean' && el !== '_id' ? (
       product[el] ? (
-        <td class='px-6 py-2 whitespace-nowrap'>
-          <span class='px-4 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-500 text-white'>
+        <td className='px-6 py-2 whitespace-nowrap' key={id}>
+          <span className='px-4 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-500 text-white'>
             Active
           </span>
         </td>
       ) : (
-        <td class='px-6 py-2 whitespace-nowrap'>
-          <span class='px-4 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-500 text-white'>
+        <td className='px-6 py-2 whitespace-nowrap' key={id}>
+          <span className='px-4 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-500 text-white'>
             Inactive
           </span>
         </td>
       )
     ) : (
       el !== '_id' && (
-        <td class='px-6 py-2 whitespace-nowrap text-sm text-gray-500'>
+        <td
+          className='px-6 py-2 whitespace-nowrap text-sm text-gray-500'
+          key={id}
+        >
           {product[el]}
         </td>
       )
@@ -68,16 +71,17 @@ export default function SearchPage () {
 
   return data.data ? (
     <>
-      <div class='flex flex-wrap space-x-1 w-full'>
-        <div class='item w-96 h-32'>
+      <div className='flex flex-wrap space-x-1 w-full'>
+        <div className='item w-96 h-32'>
           <Card title='Product Types' handleClear={() => setProductType([])}>
             {types
-              ? types.map(el => (
+              ? types.map((el, id) => (
                   <Checkbox
                     label={el._id}
                     name={el._id}
                     status={productType.includes(el._id)}
                     handleChange={handleType}
+                    key={id}
                   />
                 ))
               : 'loading'}
@@ -100,7 +104,7 @@ export default function SearchPage () {
             />
           </Card>
         </div>
-        <div class='item w-auto h-32 flex-grow'>
+        <div className='item w-auto h-32 flex-grow'>
           <div className='py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8'>
             <div className='shadow overflow-hidden border-b border-gray-200 sm:rounded-lg'>
               <p className='text-base	font-semibold py-2'>
@@ -113,8 +117,8 @@ export default function SearchPage () {
                   </tr>
                 </thead>
                 <tbody className='bg-white divide-y divide-gray-200'>
-                  {data.data.result.map(product => (
-                    <tr>
+                  {data.data.result.map((product, id) => (
+                    <tr key={id}>
                       <TableBody product={product} />
                     </tr>
                   ))}
