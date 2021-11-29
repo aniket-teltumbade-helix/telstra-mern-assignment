@@ -46,7 +46,8 @@ exports.productSearch = (req, res) => {
         $match: {
           $or: [
             { material_name: { $regex: k } },
-            { product_type: { $regex: k } }
+            { product_type: { $regex: k } },
+            { description: { $regex: k } }
           ],
           maker_product_status: { $in: [...active_product, new RegExp(k)] },
           product_type: { $in: [...product_type.split(','), new RegExp(k)] }
@@ -72,7 +73,8 @@ exports.productSearch = (req, res) => {
               $match: {
                 $or: [
                   { material_name: { $regex: k } },
-                  { product_type: { $regex: k } }
+                  { product_type: { $regex: k } },
+                  { description: { $regex: k } }
                 ],
                 maker_product_status: {
                   $in: [...active_product, new RegExp(k)]

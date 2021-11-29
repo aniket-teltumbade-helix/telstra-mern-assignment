@@ -9,8 +9,10 @@ export default function Select ({ options, selected, handleSort }) {
         value={selected}
       >
         <option defaultValue='default'>Sort</option>
-        {options.map(el => (
-          <option defaultValue={el.name}>{el.name}</option>
+        {options.map((el, id) => (
+          <option key={id} defaultValue={el.name}>
+            {el.name}
+          </option>
         ))}
       </select>
     </label>

@@ -6,10 +6,9 @@ export default function Pagination ({ count, total_pages, pageno, size }) {
   if (!pageno) {
     pageno = 1
   }
-  if (pageno > total_pages) {
+  if (parseInt(pageno) > total_pages && total_pages !== 0) {
     navigate('p/1')
   }
-  console.log({ total_pages, pageno })
   return (
     <>
       <div className='flex-1 flex justify-between sm:hidden'>

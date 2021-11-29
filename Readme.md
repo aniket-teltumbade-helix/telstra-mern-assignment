@@ -14,14 +14,12 @@ $ cd react-app/ && npm install && npm start
 
 ```
 $ cd express-app/ && npm install && npm start
-
 ```
 
 - Development
 
 ```
 $ cd express-app/ && npm install && npm run dev
-
 ```
 
 ## Database
