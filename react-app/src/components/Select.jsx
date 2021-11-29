@@ -8,7 +8,7 @@ export default function Select ({ options, selected, handleSort }) {
         onChange={handleSort}
         value={selected}
       >
-        <option>Sort</option>
+        <option defaultValue='default'>Sort</option>
         {options.map(el => (
           <option defaultValue={el.name}>{el.name}</option>
         ))}

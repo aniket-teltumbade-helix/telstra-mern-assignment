@@ -57,7 +57,7 @@ function TableBody ({ product }) {
 export default function SearchPage () {
   const { search, size, pageno } = useParams()
   const [value, setvalue] = useState({ active: false, inactive: false })
-  const [sortSelected, setSortSelected] = useState('')
+  const [sortSelected, setSortSelected] = useState('default')
   const [productType, setProductType] = useState([])
   const types = useProductTypes()
 
@@ -72,7 +72,6 @@ export default function SearchPage () {
   )
 
   const handleType = e => {
-    console.log({ productType })
     if (productType.includes(e.target.name)) {
       setProductType(productType.filter(el => el !== e.target.name))
     } else {
